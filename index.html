@@ -9,24 +9,31 @@
     <title>Weather Tracker</title>
 </head>
 <body>
-    <header class="p-2 bg-primary bg-gradient text-white mb-3">
+    <header class="row p-2 bg-primary bg-gradient text-white mb-3">
         <h1 class="text-center">Weather Dashboard</h1>
     </header>
 
-    <main class="container">
-        <section class="row">
-            <aside class="col-md-3 gap-2">
-                <h3 class="mb-3">Search for a City:</h3>
-                <input class="input-group form-control mb-2" placeholder="Chicago"></input>
-                <button class="btn btn-primary w-100">Search</button>
+    <main class="row justify-content-between">
+        <section class="col-12 col-md-3 m-auto">
+            <aside class="card mb-4">
+                <h4 class="card-header">Search By City:</h4>
+                <form class="form-body p-auto">
+                    <input class="input-group form-control mb-1" placeholder="Chicago"></input>
+                    <button class="btn border btn-primary w-100">Search</button>
+                </form>
             </aside>
 
-            <aside>
-                <h3></h3>
-                <section></section>
-                <h2></h2>
-                <section></section>
-            </aside>
+            <aside class="card">
+                <h4 class="card-header">Searched Cities</h4>
+                <form class="form-body">
+                    <button></button>
+                </form>
+            </aside>                
+        </section>
+
+        <section class="col-12 col-md-8">
+            <h3 id="city-name" class="card-subtitle">Showing Weather For: </h3>
+            <div class="list-group"></div>
         </section>
     </main>
 
