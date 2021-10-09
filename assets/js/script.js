@@ -60,3 +60,67 @@
 // // button.on("click", getWeather);
 
 // {/* <h5>${$cityName}</h5> </br> */}
+
+var $key = `798aa8a41a70442411dba5a35b70bb2d`;
+
+function getWeather(search) { // Incorporate this into the search function later
+    var $api = `https://api.openweathermap.org/data/2.5/weather?q=Texas&appid=${$key}&units=imperial`;
+
+    fetch($api)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        $("#city-name").append(data.name);
+
+        var $today = $("#today");
+        $today.textContent = "";
+
+        var $cardHead = document.createElement("h3");
+        $cardHead.className = "card-title";
+        $cardHead.textContent = moment().format("LL");
+
+        var $cardCon = document.createElement("div");
+        $cardCon.className = "card";
+
+        var $card = document.createElement("div");
+        $card.className = "card-body";
+
+        var $temp = document.createElement("p");
+        $temp.className = "card-text";
+        $temp.textContent = `Temperature: ${data.main.temp} °F`;
+
+        var $wind = document.createElement("p");
+        $wind.className = "card-text";
+        $wind.textContent = `Wind: ${data.wind.speed} MPH`;
+
+        var $hum = document.createElement("p");
+        $hum.className = "card-text";
+        $hum.textContent = `Humidity: ${data.main.humidity} %`;
+
+        var $uvIndex = document.createElement('p');
+        $uvIndex.className = "card-text";
+
+        fetch(`http://api.openweathermap.org/data/2.5/uvi?appid=${$key}&lat=${data.coord.lat}&lon=${data.coord.lon}`)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            $uvIndex.textContent = `UV Index: ${data.value}`;
+        });
+        var $weatherImg = document.createElement("img");
+
+        $weatherImg.setAttribute("src", `http://openweathermap.org/img/w/${data.weather[0].icon}.png`)
+
+        $cardHead.append($weatherImg);
+        $card.append($cardHead);
+        $card.append($temp);
+        $card.append($wind);
+        $card.append($hum);
+        $card.append($uvIndex);
+        $cardCon.append($card);
+        $today.append($cardCon);
+    })
+}
+
+getWeather();
