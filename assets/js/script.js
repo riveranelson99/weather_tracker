@@ -108,8 +108,8 @@ function getWeather(search) { // Incorporate this into the search function later
         .then(function(data) {
             $uvIndex.textContent = `UV Index: ${data.value}`;
         });
-        var $weatherImg = document.createElement("img");
 
+        var $weatherImg = document.createElement("img");
         $weatherImg.setAttribute("src", `http://openweathermap.org/img/w/${data.weather[0].icon}.png`)
 
         $cardHead.append($weatherImg);
@@ -123,4 +123,66 @@ function getWeather(search) { // Incorporate this into the search function later
     })
 }
 
+function fiveDay(search) { // Incorporate this into the search function later
+    var $fiveHead = $("#five-head");
+
+    $fiveHead.removeClass();
+
+    var $forecast = $("#forecast");
+
+    $forecast.innerHTML = "";
+
+    var $api = `https://api.openweathermap.org/data/2.5/forecast?q=Texas&appid=${$key}&units=imperial`;
+
+    fetch($api)
+    .then(function(response) {
+        return response.json()
+    })
+    .then(function(data) {
+        console.log(data);
+        var $forecastTwo = document.getElementById("forecast");
+
+        for (var i=0; i < data.list.length; i++) {
+            if (data.list[i].dt_txt.includes("12:00:00")) {
+                var $cardHead = document.createElement('h5');                
+                $cardHead.className = "card-title text-left";
+                $cardHead.textContent = moment(data.list[i].dt_txt.split("12:")[0]).format("M/D/YYYY");// Keep messing with sizing settings to get it JUST right
+
+                var $cardCon = document.createElement('div');
+                $cardCon.className = "card col-12 col-md-2 m-2 bg-success text-white";
+
+                var $card = document.createElement('div');
+                $card.className = "card-body";
+
+                var $cardTwo = document.createElement('div');
+
+                var $temp = document.createElement('p');
+                $temp.className = "card-text"
+                $temp.textContent = `Temp: ${data.list[i].main.temp_max} °F`;
+
+                var $wind = document.createElement('p');
+                $wind.className = "card-text";
+                $wind.textContent = `Wind: ${data.list[i].wind.speed} MPH`;
+
+                var $hum = document.createElement('p');
+                $hum.className = "card-text"
+                $hum.textContent = `Humidity: ${data.list[i].main.humidity} %`;
+
+                var $weatherImg = document.createElement('img');
+                $weatherImg.setAttribute('src', `https://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png`);
+
+                $card.appendChild($cardHead);
+                $card.appendChild($weatherImg);
+                $card.appendChild($temp);
+                $card.appendChild($wind);
+                $card.appendChild($hum);
+                $cardCon.appendChild($card);
+                $cardTwo.appendChild($cardCon);
+                $forecastTwo.appendChild($cardCon);
+            }
+        }
+    })
+}
+
 getWeather();
+fiveDay();
