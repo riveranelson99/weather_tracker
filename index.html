@@ -4,34 +4,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Provide link to bootstrap for css designing -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
     <title>Weather Tracker</title>
 </head>
 <body>
+    <!-- Main banner/header set up as semi-jumbotron -->
     <header class="row p-2 bg-primary bg-gradient text-white mb-3">
         <h1 class="text-center">Weather Dashboard</h1>
     </header>
 
-    <main class="row justify-content-between">
-        <section class="col-12 col-md-3 m-auto">
+    <!-- Main section set up as one major container -->
+    <main class="row justify-content-between container-fluid">
+        <!-- Set up each section (of which there will be 3 major ones) so as to occupy the whole screen on smaller devices and share screen space evenly when on medium and larger screens -->
+        <section class="col-12 col-md-3 m-4">
+            <!-- The first section will be the search area where users will input the city they desire to check the weather of -->
             <aside class="card mb-4">
                 <h4 class="card-header">Search By City:</h4>
-                <form class="form-body p-auto">
+                <section class="form-body p-auto">
                     <input id="city" class="input-group form-control mb-1" placeholder="Chicago"></input>
                     <button id="submit" class="btn border btn-primary w-100">Search</button>
-                </form>
+                </section>
             </aside>
 
+            <!-- The section section will be where the cities that were searched will go -->
+            <!-- This section will be occupied by a list that will be populated via the script -->
             <aside class="card">
                 <h4 class="card-header">Searched Cities</h4>
-                <form class="form-body">
-                    <button></button>
-                </form>
+                <ul id="history" class="list-group history">
+                </ul>
             </aside>                
         </section>
 
-        <section class="col-12 col-md-8 container">
+        <!-- The final major section will be where the weather information for the day and 5 days after that will be displayed -->
+        <section class="col-12 col-md-8 m-10">
             <h3 id="city-name" class="card-subtitle">Showing Weather For: </h3>
             <section id="today"></section>
             <h3 id="five-head" class="invisible">5-Day Forecast:</h3>
@@ -39,6 +45,7 @@
         </section>
     </main>
 
+    <!-- Provide links for jquery and moment to be called upon as needed -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="assets/js/script.js"></script>
