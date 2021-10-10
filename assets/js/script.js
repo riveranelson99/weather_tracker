@@ -62,15 +62,17 @@
 // {/* <h5>${$cityName}</h5> </br> */}
 
 var $key = `798aa8a41a70442411dba5a35b70bb2d`;
+var $submit = document.getElementById("submit");
 
 function getWeather(search) { // Incorporate this into the search function later
-    var $api = `https://api.openweathermap.org/data/2.5/weather?q=Texas&appid=${$key}&units=imperial`;
+    var $api = `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=${$key}&units=imperial`;
 
     fetch($api)
     .then(function(response) {
         return response.json();
     })
     .then(function(data) {
+        console.log(data);
         $("#city-name").append(data.name);
 
         var $today = $("#today");
@@ -132,7 +134,7 @@ function fiveDay(search) { // Incorporate this into the search function later
 
     $forecast.innerHTML = "";
 
-    var $api = `https://api.openweathermap.org/data/2.5/forecast?q=Texas&appid=${$key}&units=imperial`;
+    var $api = `https://api.openweathermap.org/data/2.5/forecast?q=${search}&appid=${$key}&units=imperial`;
 
     fetch($api)
     .then(function(response) {
@@ -142,47 +144,59 @@ function fiveDay(search) { // Incorporate this into the search function later
         console.log(data);
         var $forecastTwo = document.getElementById("forecast");
 
-        for (var i=0; i < data.list.length; i++) {
-            if (data.list[i].dt_txt.includes("12:00:00")) {
-                var $cardHead = document.createElement('h5');                
-                $cardHead.className = "card-title text-left";
-                $cardHead.textContent = moment(data.list[i].dt_txt.split("12:")[0]).format("M/D/YYYY");// Keep messing with sizing settings to get it JUST right
+        for (var i=4; i < data.list.length; i+=8) {
+            console.log(data);
+            var $cardHead = document.createElement('h5');
+            $cardHead.className = "card-title text-left";
+            $cardHead.textContent = moment(data.list[i].dt_txt).format("M/D/YYYY");// Keep messing with sizing settings to get it JUST right
 
-                var $cardCon = document.createElement('div');
-                $cardCon.className = "card col-12 col-md-2 m-2 bg-success text-white";
+            var $cardCon = document.createElement('div');
+            $cardCon.className = "card col-12 col-md-2 m-2 bg-success text-white";
 
-                var $card = document.createElement('div');
-                $card.className = "card-body";
+            var $card = document.createElement('div');
+            $card.className = "card-body";
 
-                var $cardTwo = document.createElement('div');
+            var $cardTwo = document.createElement('div');
 
-                var $temp = document.createElement('p');
-                $temp.className = "card-text"
-                $temp.textContent = `Temp: ${data.list[i].main.temp_max} °F`;
+            var $temp = document.createElement('p');
+            $temp.className = "card-text"
+            $temp.textContent = `Temp: ${data.list[i].main.temp_max} °F`;
 
-                var $wind = document.createElement('p');
-                $wind.className = "card-text";
-                $wind.textContent = `Wind: ${data.list[i].wind.speed} MPH`;
+            var $wind = document.createElement('p');
+            $wind.className = "card-text";
+            $wind.textContent = `Wind: ${data.list[i].wind.speed} MPH`;
 
-                var $hum = document.createElement('p');
-                $hum.className = "card-text"
-                $hum.textContent = `Humidity: ${data.list[i].main.humidity} %`;
+            var $hum = document.createElement('p');
+            $hum.className = "card-text"
+            $hum.textContent = `Humidity: ${data.list[i].main.humidity} %`;
 
-                var $weatherImg = document.createElement('img');
-                $weatherImg.setAttribute('src', `https://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png`);
+            var $weatherImg = document.createElement('img');
+            $weatherImg.setAttribute('src', `https://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png`);
 
-                $card.appendChild($cardHead);
-                $card.appendChild($weatherImg);
-                $card.appendChild($temp);
-                $card.appendChild($wind);
-                $card.appendChild($hum);
-                $cardCon.appendChild($card);
-                $cardTwo.appendChild($cardCon);
-                $forecastTwo.appendChild($cardCon);
-            }
+            $card.appendChild($cardHead);
+            $card.appendChild($weatherImg);
+            $card.appendChild($temp);
+            $card.appendChild($wind);
+            $card.appendChild($hum);
+            $cardCon.appendChild($card);
+            $cardTwo.appendChild($cardCon);
+            $forecastTwo.appendChild($cardCon);
         }
     })
 }
 
-getWeather();
-fiveDay();
+function searchCity(event) {
+    event.preventDefault();
+
+    var $lookup = document.getElementById("city").value;
+    if (document.getElementById("city").value !== ""){
+        getWeather($lookup);
+        fiveDay($lookup);
+
+        document.getElementById("city").value = "";
+    }
+}
+
+// getWeather();
+// fiveDay();
+$submit.addEventListener("click", searchCity);
